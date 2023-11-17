@@ -1,0 +1,6 @@
+pyopengltk
+vispy
+watchdog
+isort
+black
+solidpython
