@@ -32,7 +32,7 @@ from tkinter.filedialog import askopenfilename
 
 import vispy
 import vispy.scene
-from solid import scad_render_to_file
+from solid2 import scad_render_to_file
 from watchdog.events import DirDeletedEvent, FileModifiedEvent, LoggingEventHandler
 from watchdog.observers import Observer
 
@@ -326,7 +326,8 @@ class Controller:
         self.view.plot(self.view_mode_var.get())
 
     def exit(self):
-        self.file_handler.stop()
+        if hasattr(self, 'file_handler'):
+            self.file_handler.stop()
         self.model.clear()
         self.view.clear()
         self.root.destroy()
@@ -402,7 +403,10 @@ class Controller:
             # call openscad and generate an stl, then load the stl
             file_handle = pathlib.Path(file_path)
             new_file = file_handle.with_stem("solidpython_temp").with_suffix(".stl")
-            subprocess.run(["openscad", "-o", new_file, file_path])
+            try:
+                subprocess.run(["openscad", "-o", new_file, file_path])
+            except FileNotFoundError as _:
+                subprocess.run(["openscad-nightly", "-o", new_file, file_path])
             self.logger.info(f"Converted scad file to {new_file}")
             super().reload(new_file)
 
@@ -419,11 +423,10 @@ class Controller:
             spec.loader.exec_module(foo)
             new_file = scad_render_to_file(
                 foo.solidpython_model,
-                filepath=new_path,
+                filename=new_path,
                 file_header=f"$fn = {foo.solidpython_segments};",
-                include_orig_code=False,
             )
-            self.logger.info(f"Converted python file to {new_file}")
+            self.logger.info(f"Converted python file to {new_file}. Reloading STL...")
             super().reload(new_file)
 
 

@@ -3,4 +3,4 @@ vispy
 watchdog
 isort
 black
-solidpython
+solidpython2

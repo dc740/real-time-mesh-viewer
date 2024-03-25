@@ -23,7 +23,9 @@ The example "basic_geometry.py" (taken from SolidPython) shows how to expose the
 The original viewer code came from this other project, and I added the main feature on top of it:
 https://github.com/precise-simulation/mesh-viewer/
 
-(*) This was just a proof of concept. After all, it's easier to just start OpenSCAD, open the generated scad file (from SolidPython), and enable auto reload in _Design_ -> _Automatic Reload and Preview._
+(*) This was just a proof of concept. After all, it's easier to just start OpenSCAD, open the generated scad file (from SolidPython), and enable auto reload in _Design_ -> _Automatic Reload and Preview.
+
+If converting a file takes a lot of time in OpenSCAD, then it will also take a lot of time to load on this project, but since it will be shown much smoother since they are automatically converted to STL files. Try reducing the number of segments, since this speeds up the process.
 
 -----
 
